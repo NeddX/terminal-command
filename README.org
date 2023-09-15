@@ -1,5 +1,5 @@
-#+author Neddiendrohu
-#+title Terminal Command
+#+title: Terminal Command
+#+author: Neddiendrohu
 
 * About
-Side-scrolling strategy game inspired by Cortex Command
+Strategy based side-scrolling game in your terminal. The game is heavily inspired by Cortex Command by Data Realms.
