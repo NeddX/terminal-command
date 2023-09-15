@@ -1,0 +1,5 @@
+#+author Neddiendrohu
+#+title Terminal Command
+
+* About
+Side-scrolling strategy game inspired by Cortex Command
