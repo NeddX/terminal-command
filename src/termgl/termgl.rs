@@ -1,24 +1,17 @@
-use crossterm::{
-    cursor,
-    terminal::{self, ClearType},
-    ExecutableCommand
-    //event::{self, Event, KeyCode, KeyEvent, MouseEvent, KeyModifiers}
-};
-use std::io::{self, Write};
-use std::time::{Duration, Instant};
+use crossterm::{self, ExecutableCommand};
 
 // Wrappers around their corssterm equivilants.
 pub struct KeyEvent(crossterm::event::KeyEvent);
 pub struct MouseEvent(crossterm::event::MouseEvent);
 
-type KeyEventDelegate = fn(event_args: KeyEvent);
-type MouseEventDelegate = fn(event_args: MouseEvent);
+pub type KeyEventDelegate = fn(event_args: KeyEvent);
+pub type MouseEventDelegate = fn(event_args: MouseEvent);
 
 pub struct Window {
     width: u16,
     height: u16,
     framebuffer: Vec<char>,
-    stdout: io::Stdout,
+    stdout: std::io::Stdout,
     delay: u32,
     event_on_key_down: Option<KeyEventDelegate>,
     event_on_key_release: Option<KeyEventDelegate>,
@@ -35,7 +28,7 @@ impl Window {
             width: width,
             height: height,
             framebuffer: vec!['\0'; (width * height) as usize],
-            stdout: io::stdout(),
+            stdout: std::io::stdout(),
             delay: delay,
             event_on_key_down: Option::None,
             event_on_key_release: Option::None,
@@ -46,24 +39,24 @@ impl Window {
             disposed: false,
         };
 
-        terminal::enable_raw_mode().unwrap();
-        inst.stdout.execute(cursor::Hide).unwrap();
+        crossterm::terminal::enable_raw_mode().unwrap();
+        inst.stdout.execute(crossterm::cursor::Hide).unwrap();
 
         return inst;
     }
 
     fn dispose(&mut self) {
         if !self.disposed {
-            self.stdout.execute(terminal::Clear(ClearType::All)).unwrap();
-            self.stdout.execute(cursor::MoveTo(0, 0)).unwrap();
-            self.stdout.execute(cursor::Show).unwrap();
-            terminal::disable_raw_mode().unwrap();
+            self.stdout.execute(crossterm::terminal::Clear(crossterm::terminal::ClearType::All)).unwrap();
+            self.stdout.execute(crossterm::cursor::MoveTo(0, 0)).unwrap();
+            self.stdout.execute(crossterm::cursor::Show).unwrap();
+            crossterm::terminal::disable_raw_mode().unwrap();
             self.disposed = true;
         }
     }
 
     fn process_events(&mut self) {
-        if crossterm::event::poll(Duration::from_millis(self.delay as u64)).unwrap() {
+        if crossterm::event::poll(std::time::Duration::from_millis(self.delay as u64)).unwrap() {
             match crossterm::event::read().unwrap() {
                 crossterm::event::Event::Key(key_event) => {
                     match key_event.kind {
@@ -101,13 +94,13 @@ impl Window {
     }
 
     pub fn swap_buffer(&mut self) -> &mut Self {
-        self.stdout.execute(terminal::Clear(ClearType::All)).unwrap();
-        self.stdout.execute(cursor::MoveTo(0, 0)).unwrap();
+        self.stdout.execute(crossterm::terminal::Clear(crossterm::terminal::ClearType::All)).unwrap();
+        self.stdout.execute(crossterm::cursor::MoveTo(0, 0)).unwrap();
 
         for i in 0..(self.width * self.height) as usize {
             print!("{}", self.framebuffer[i]);
             if (i + 1) % self.width as usize == 0 {
-                self.stdout.execute(cursor::MoveTo(0, ((i + 1) / self.width as usize) as u16)).unwrap();
+                self.stdout.execute(crossterm::cursor::MoveTo(0, ((i + 1) / self.width as usize) as u16)).unwrap();
             }
         }
 
