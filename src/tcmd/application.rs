@@ -1,12 +1,10 @@
-use super::*;
+
 
 pub struct Application {
     title: String,
     running: bool,
-    window: termgl::Window,
-    active_scene: Scene2D,
-    tp1: Instant,
-    tp2: Instant
+    window: crate::termgl::Window,
+    active_scene: crate::tcmd::Scene2D
 }
 
 impl Application {
@@ -14,19 +12,15 @@ impl Application {
         return Application {
             title: title,
             running: true,
-            window: termgl::Window::new(width, height, delay),
-            active_scene: Scene2D::new(Vec::new()),
-            tp1:
+            window: crate::termgl::Window::new(width, height, delay),
+            active_scene: crate::tcmd::Scene2D::new(Vec::new())
         };
     }
 
     pub fn run(&mut self) {
         let mut delta: f32 = -1.0;
-        while running {
-            self.tp2 = Instant::now();
+        while self.running {
 
-
-            self.tp2 = Instant::now();
         }
     }
 }
