@@ -11,7 +11,7 @@ pub struct Scene2D {
 }
 
 impl Scene2D {
-    pub fn new(window: &Window) -> Self {
+    pub fn new() -> Self {
         return Scene2D {
             entities: Vec::new(),
             camera: Camera2D::new(Vector2::zero())
