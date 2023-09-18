@@ -55,7 +55,7 @@ impl Window {
         }
     }
 
-    fn process_events(&mut self) {
+    pub fn process_events(&mut self) {
         if crossterm::event::poll(std::time::Duration::from_millis(self.delay as u64)).unwrap() {
             match crossterm::event::read().unwrap() {
                 crossterm::event::Event::Key(key_event) => {
