@@ -1,20 +1,21 @@
 use super::*;
-use std::any::Any;
 
 pub const MAX_ENTITY_COUNT: usize = 1024;
 pub const MAX_COMPONENT_COUNT: usize = 256;
 pub const MAX_COMPONENT_PER_ENTITY: usize = 30;
 
-pub struct Scene2D {
+pub struct Scene2D<'a> {
     entities: Vec<Box<Entity>>,
-    camera: Camera2D
+    camera: Camera2D,
+    renderer: &'a mut Renderer2D
 }
 
-impl Scene2D {
-    pub fn new() -> Self {
+impl<'a> Scene2D<'a> {
+    pub fn new(renderer: &'a mut Renderer2D) -> Self {
         return Scene2D {
             entities: Vec::new(),
-            camera: Camera2D::new(Vector2::zero())
+            camera: Camera2D::new(Vector2::zero()),
+            renderer: renderer
         };
     }
 
