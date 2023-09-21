@@ -14,25 +14,26 @@ pub trait IComponent {
 
 pub struct Entity {
     pos: Vector2,
-    components: Vec<Box<dyn IComponent>>
+    components: HashMap<TypeId, Box<dyn IComponent>>
 }
 
 impl Entity {
     pub fn new(pos: Vector2) -> Self {
         return Entity {
             pos: pos,
-            components: Vec::new()
+            components: HashMap::new()
         };
     }
 
-    pub fn update(&mut self, delta_time: f32) -> &mut Self {
-        for c in self.components.iter_mut() {
-            c.update(delta_time);
-        }
-        return self;
+    pub fn get_component<T, 'a>(&'a mut self) &'a mut {
+        let id = TypeId::of::<T>();
+        return self.components.get(id);
     }
 
-    pub fn components(&self) -> &Vec<Box<dyn IComponent>> {
-        &self.components
+    pub fn update(&mut self, delta_time: f32) -> &mut Self {
+        for (_, v) in self.components.iter_mut() {
+            v.update(delta_time);
+        }
+        return self;
     }
 }
