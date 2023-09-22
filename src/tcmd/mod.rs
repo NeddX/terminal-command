@@ -6,7 +6,9 @@ mod camera2d;
 mod components;
 
 use crate::*;
-use std::any::TypeId;
+use std::any::{TypeId, Any};
+use std::cell::{RefCell, RefMut};
+use as_any::{AsAny, Downcast};
 use std::collections::HashMap;
 
 pub use application::*;

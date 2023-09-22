@@ -19,6 +19,7 @@ impl Application {
 
     pub fn run(&mut self) {
         let mut delta: f32 = -1.0;
+        self.scene.add_entity(Entity::new(Vector2::zero()));
         while self.running {
             // Event update
             self.window.process_events();

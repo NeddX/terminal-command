@@ -1,7 +1,7 @@
 use super::*;
 
-struct TagComponent {
-    tag: String
+pub struct TagComponent {
+    pub tag: String
 }
 
 impl IComponent for TagComponent {
@@ -10,8 +10,14 @@ impl IComponent for TagComponent {
     }
 }
 
-struct TransformComponent {
-    pos: Vector2
+pub struct TransformComponent {
+    pub pos: Vector2
+}
+
+impl TransformComponent {
+    pub fn pos(&mut self) -> Vector2 {
+        self.pos
+    }
 }
 
 impl IComponent for TransformComponent {
@@ -20,10 +26,10 @@ impl IComponent for TransformComponent {
     }
 }
 
-struct CharSpriteComponent {
+pub struct CharSpriteComponent {
     visible: bool,
-    width: u16,
-    height: u16,
+    pub width: u16,
+    pub height: u16,
     char_sprite: Vec<char>
 }
 
@@ -35,34 +41,17 @@ impl IComponent for CharSpriteComponent {
     fn visible(&self) -> bool {
         self.visible
     }
-    fn name(&self) -> &str {
-        "sprite"
-    }
     fn set_visible(&mut self, new_visible: bool) {
         self.visible = new_visible;
     }
 }
 
 impl CharSpriteComponent {
-    fn char_sprite(&self) -> &Vec<char> {
+    pub fn char_sprite(&self) -> &Vec<char> {
         &self.char_sprite
     }
-    fn width(&self) -> u16 {
-        self.width
-    }
-    fn height(&self) -> u16 {
-        self.height
-    }
-    fn set_char_sprite(&mut self, new_char_sprite: Vec<char>) -> &mut Self {
+    pub fn set_char_sprite(&mut self, new_char_sprite: Vec<char>) -> &mut Self {
         self.char_sprite = new_char_sprite;
-        self
-    }
-    fn set_width(&mut self, new_width: u16) -> &mut Self {
-        self.width = new_width;
-        self
-    }
-    fn set_height(&mut self, new_height: u16) -> &mut Self {
-        self.height = new_height;
         self
     }
 }

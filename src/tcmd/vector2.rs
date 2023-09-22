@@ -2,8 +2,8 @@ use super::*;
 
 #[derive(Copy, Clone)]
 pub struct Vector2 {
-    x: i32,
-    y: i32
+    pub x: i32,
+    pub y: i32
 }
 
 impl Vector2 {
