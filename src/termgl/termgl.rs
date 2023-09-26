@@ -1,3 +1,5 @@
+use std::io::Error;
+
 use crossterm::{self, ExecutableCommand};
 
 // Wrappers around their corssterm equivilants.
@@ -55,9 +57,9 @@ impl Window {
         }
     }
 
-    pub fn process_events(&mut self) {
-        if crossterm::event::poll(std::time::Duration::from_millis(self.delay as u64)).unwrap() {
-            match crossterm::event::read().unwrap() {
+    pub fn process_events(&mut self) -> Result<(), Error> {
+        if crossterm::event::poll(std::time::Duration::from_millis(self.delay as u64))? {
+            match crossterm::event::read()? {
                 crossterm::event::Event::Key(key_event) => {
                     match key_event.kind {
                         crossterm::event::KeyEventKind::Press => {
@@ -86,6 +88,7 @@ impl Window {
                 _ => {  }
             }
         }
+        return Result::Ok(());
     }
 
     pub fn draw_at(&mut self, x: u16, y: u16, c: char) -> &mut Self {
@@ -93,19 +96,19 @@ impl Window {
         return self;
     }
 
-    pub fn swap_buffer(&mut self) -> &mut Self {
-        self.stdout.execute(crossterm::terminal::Clear(crossterm::terminal::ClearType::All)).unwrap();
-        self.stdout.execute(crossterm::cursor::MoveTo(0, 0)).unwrap();
+    pub fn swap_buffer(&mut self) -> Result<&mut Self, Error> {
+        self.stdout.execute(crossterm::terminal::Clear(crossterm::terminal::ClearType::All))?;
+        self.stdout.execute(crossterm::cursor::MoveTo(0, 0))?;
 
         for i in 0..(self.width * self.height) as usize {
             print!("{}", self.framebuffer[i]);
             if (i + 1) % self.width as usize == 0 {
-                self.stdout.execute(crossterm::cursor::MoveTo(0, ((i + 1) / self.width as usize) as u16)).unwrap();
+                self.stdout.execute(crossterm::cursor::MoveTo(0, ((i + 1) / self.width as usize) as u16))?;
             }
         }
 
-        self.framebuffer.clear();
-        return self;
+        self.framebuffer.fill(0 as char);
+        return Result::Ok(self);
     }
 
     pub fn attach_on_key_down(&mut self, callback: KeyEventDelegate) -> &mut Self {

@@ -41,15 +41,26 @@ impl IComponent for CharSpriteComponent {
     fn visible(&self) -> bool {
         self.visible
     }
+
     fn set_visible(&mut self, new_visible: bool) {
         self.visible = new_visible;
     }
 }
 
 impl CharSpriteComponent {
+    pub fn new(width: u16, height: u16, char_sprite: Vec<char>) -> Self {
+        return CharSpriteComponent {
+            visible: true,
+            width: width,
+            height: height,
+            char_sprite: char_sprite
+        };
+    }
+
     pub fn char_sprite(&self) -> &Vec<char> {
         &self.char_sprite
     }
+
     pub fn set_char_sprite(&mut self, new_char_sprite: Vec<char>) -> &mut Self {
         self.char_sprite = new_char_sprite;
         self

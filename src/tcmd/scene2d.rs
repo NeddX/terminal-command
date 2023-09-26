@@ -30,17 +30,19 @@ impl Scene2D {
         }
 
         // Render entities
+        /*
         for e in self.entities.iter_mut() {
             if let Option::Some(c) = e.get_component::<CharSpriteComponent>() {
-                let trans = e.get_component::<TransformComponent>().unwrap();
-                let char_sprite = c.char_sprite();
-                window.draw_at(
+                //let trans = e.get_component::<TransformComponent>().unwrap();
+                //let char_sprite = c.char_sprite();
+                /*window.draw_at(
                     trans.pos.x as u16,
                     trans.pos.y as u16,
                     char_sprite[0]
-                );
+                );*/
             }
         }
+        */
         return self;
     }
 }

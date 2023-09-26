@@ -7,7 +7,8 @@ mod components;
 
 use crate::*;
 use std::any::{TypeId, Any};
-use std::cell::{RefCell, RefMut};
+use std::cell::{RefCell, RefMut, Ref};
+use std::error::{Error};
 use as_any::{AsAny, Downcast};
 use std::collections::HashMap;
 

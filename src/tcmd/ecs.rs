@@ -1,3 +1,5 @@
+use std::borrow::BorrowMut;
+
 use super::*;
 
 pub trait IComponent : AsAny {
@@ -25,31 +27,34 @@ impl Entity {
     }
 
     pub fn get_component<T: IComponent + 'static>(&self) -> Option<RefMut<T>> {
-        let id = TypeId::of::<T>();
-        match self.components.get(&id) {
-            Option::Some(comp_cell) => {
-                return Some(RefMut::map(comp_cell.borrow_mut(), |t| {
-                    t.downcast_mut::<T>().unwrap()
+        let type_id = TypeId::of::<T>();
+        match self.components.get(&type_id) {
+            Option::Some(component) => {
+                let try_borrow = component.try_borrow_mut().unwrap();
+                return Option::Some(RefMut::map(try_borrow, |x| -> &mut T {
+                    (**x).downcast_mut::<T>().unwrap()
                 }));
             },
-            _ => {
+            Option::None => {
                 return Option::None;
             }
         }
     }
 
-    pub fn add_component<T: IComponent + 'static>(&mut self, args: T) -> RefMut<T> {
+    pub fn add_component<T: IComponent + 'static>(&mut self, args: T) -> Option<RefMut<T>> {
         let c = RefCell::new(Box::new(args));
-        self.components.insert(TypeId::of::<T>(), c);
-        return RefMut::map(self.components.values().last().unwrap().borrow_mut(),
-                           |t| {
-                               t.downcast_mut::<T>().unwrap()
-                           });
+        let type_id = TypeId::of::<T>();
+        self.components.insert(type_id, c);
+        let try_borrow = self.components.get(&type_id).unwrap().try_borrow_mut().unwrap();
+        return Option::Some(RefMut::map(try_borrow, |x| -> &mut T {
+            (**x).downcast_mut::<T>().unwrap()
+        }));
     }
 
     pub fn update(&mut self, delta_time: f32) -> &mut Self {
         for (_, v) in self.components.iter_mut() {
-            v.borrow_mut().update(delta_time);
+            let a = v.get_mut();
+            //v.borrow_mut().update(delta_time);
         }
         return self;
     }
