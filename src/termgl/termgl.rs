@@ -44,7 +44,7 @@ impl Window {
         crossterm::terminal::enable_raw_mode().unwrap();
         inst.stdout.execute(crossterm::cursor::Hide).unwrap();
 
-        return inst;
+        inst
     }
 
     fn dispose(&mut self) {
@@ -88,12 +88,12 @@ impl Window {
                 _ => {  }
             }
         }
-        return Result::Ok(());
+       Result::Ok(())
     }
 
     pub fn draw_at(&mut self, x: u16, y: u16, c: char) -> &mut Self {
         self.framebuffer[(y * self.width + x) as usize] = c;
-        return self;
+        self
     }
 
     pub fn swap_buffer(&mut self) -> Result<&mut Self, Error> {
@@ -108,37 +108,37 @@ impl Window {
         }
 
         self.framebuffer.fill(0 as char);
-        return Result::Ok(self);
+        Result::Ok(self)
     }
 
     pub fn attach_on_key_down(&mut self, callback: KeyEventDelegate) -> &mut Self {
         self.event_on_key_down = Option::Some(callback);
-        return self;
+        self
     }
 
     pub fn attach_on_key_release(&mut self, callback: KeyEventDelegate) -> &mut Self {
         self.event_on_key_down = Option::Some(callback);
-        return self;
+        self
     }
 
     pub fn attach_on_key_repeat(&mut self, callback: KeyEventDelegate) -> &mut Self {
         self.event_on_key_down = Option::Some(callback);
-        return self;
+        self
     }
 
     pub fn attach_on_mouse_down(&mut self, callback: MouseEventDelegate) -> &mut Self {
         self.event_on_mouse_down = Option::Some(callback);
-        return self;
+        self
     }
 
     pub fn attach_on_mouse_release(&mut self, callback: MouseEventDelegate) -> &mut Self {
         self.event_on_mouse_release = Option::Some(callback);
-        return self;
+        self
     }
 
     pub fn attach_on_mouse_move(&mut self, callback: MouseEventDelegate) -> &mut Self {
         self.event_on_mouse_move = Option::Some(callback);
-        return self;
+        self
     }
 }
 

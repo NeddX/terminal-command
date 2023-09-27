@@ -14,16 +14,14 @@ pub trait IComponent : AsAny {
 }
 
 pub struct Entity {
-    pos: Vector2,
     components: HashMap<TypeId, RefCell<Box<dyn IComponent>>>
 }
 
 impl Entity {
-    pub fn new(pos: Vector2) -> Self {
-        return Entity {
-            pos: pos,
+    pub fn new() -> Self {
+        Entity {
             components: HashMap::new()
-        };
+        }
     }
 
     pub fn get_component<T: IComponent + 'static>(&self) -> Option<RefMut<T>> {
@@ -46,16 +44,20 @@ impl Entity {
         let type_id = TypeId::of::<T>();
         self.components.insert(type_id, c);
         let try_borrow = self.components.get(&type_id).unwrap().try_borrow_mut().unwrap();
-        return Option::Some(RefMut::map(try_borrow, |x| -> &mut T {
+        Option::Some(RefMut::map(try_borrow, |x| -> &mut T {
             (**x).downcast_mut::<T>().unwrap()
-        }));
+        }))
     }
 
     pub fn update(&mut self, delta_time: f32) -> &mut Self {
         for (_, v) in self.components.iter_mut() {
-            let a = v.get_mut();
-            //v.borrow_mut().update(delta_time);
+            match v.try_borrow_mut() {
+                Result::Ok(mut borrow) => {
+                    borrow.update(delta_time);
+                },
+                _ => { }
+            }
         }
-        return self;
+        self
     }
 }

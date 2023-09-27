@@ -31,17 +31,17 @@ mod snake {
 
     impl Vector2 {
         pub fn new(x: i32, y: i32) -> Self {
-            return Vector2 {
+            Vector2 {
                 x: x,
                 y: y
-            };
+            }
         }
 
         pub fn zero() -> Self {
-            return Vector2 {
+            Vector2 {
                 x: 0,
                 y: 0
-            };
+            }
         }
     }
 
@@ -62,10 +62,10 @@ mod snake {
 
     impl Segment {
         fn new(dir: Direction, pos: Vector2) -> Self {
-            return Segment {
+            Segment {
                 dir: dir,
                 pos: pos
-            };
+            }
         }
     }
 

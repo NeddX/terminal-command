@@ -4,6 +4,14 @@ pub struct TagComponent {
     pub tag: String
 }
 
+impl TagComponent {
+    pub fn new(tag: String) -> Self {
+        TagComponent {
+            tag: tag
+        }
+    }
+}
+
 impl IComponent for TagComponent {
     fn init(&mut self) {
         println!("Init Tag Component.");
@@ -15,6 +23,12 @@ pub struct TransformComponent {
 }
 
 impl TransformComponent {
+    pub fn new (pos: Vector2) -> Self {
+        TransformComponent {
+            pos: pos
+        }
+    }
+
     pub fn pos(&mut self) -> Vector2 {
         self.pos
     }
@@ -49,12 +63,12 @@ impl IComponent for CharSpriteComponent {
 
 impl CharSpriteComponent {
     pub fn new(width: u16, height: u16, char_sprite: Vec<char>) -> Self {
-        return CharSpriteComponent {
+        CharSpriteComponent {
             visible: true,
             width: width,
             height: height,
             char_sprite: char_sprite
-        };
+        }
     }
 
     pub fn char_sprite(&self) -> &Vec<char> {

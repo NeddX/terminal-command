@@ -6,8 +6,8 @@ pub struct Camera2D {
 
 impl Camera2D {
     pub fn new(pos: Vector2) -> Self {
-        return Camera2D {
+        Camera2D {
             pos: pos
-        };
+        }
     }
 }
